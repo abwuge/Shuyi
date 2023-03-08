@@ -1,0 +1,17 @@
+{
+    "Host": "scrm-prod.shuyi.org.cn",
+    "Connection": "keep-alive",
+    "charset": "utf-8",
+    "auth": "",
+    "sessionkey": "",
+    "channel": "wechat_micro",
+    "User-Agent": "",
+    "terminal-code": "member_wechat_micro",
+    "Accept-Encoding": "gzip,compress,br,deflate",
+    "releaseversion": "",
+    "hostname": "scrm-prod.shuyi.org.cn",
+    "httpt-taceid": "",
+    "content-type": "application/json",
+    "channelid": "",
+    "Referer": "https://servicewechat.com/wxa778c3d895442625/272/page-frame.html"
+}

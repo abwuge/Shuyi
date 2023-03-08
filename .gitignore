@@ -1,0 +1,16 @@
+#  默认忽略所有文件，防止隐私文件上传
+/*
+
+#   以下项目文件将进行上传
+## .gitignore文件
+!.gitignore
+##  项目主函数
+!main.py
+##  签到请求函数
+!post.py
+##  项目介绍文件
+!Readme.md
+##  config文件及headers文件
+!/example
+##  消息推送（未完善）
+#!/Message_Push

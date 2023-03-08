@@ -1,0 +1,15 @@
+# 这是配置文件，你需要在此输入您的抓包数据
+
+[auth]
+# 这是书亦auth，可能是个人cookie
+# 支持多用户
+# 不需要加添加引号
+auths0 = this_is_an_example
+auths1 = this_is_an_example_2
+
+# 这是User-Agent
+# 建议多用户使用不同的User-Agent
+# User-Agent数目不足会自动复制粘贴以补足
+[User-Agent]
+agents0 = this_is_an_example
+agents1 = this_is_an_example_2

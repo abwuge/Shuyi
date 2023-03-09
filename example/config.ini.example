@@ -1,15 +1,40 @@
 # 这是配置文件，你需要在此输入您的抓包数据
 
+# 书亦账号部分
+# 书亦账号部分
+# 书亦账号部分
+
 [auth]
-# 这是书亦auth，可能是个人cookie
+# 这是书亦auth，可能是个人cookie，可通过抓包获取
 # 支持多用户
 # 不需要加添加引号
 auths0 = this_is_an_example
 auths1 = this_is_an_example_2
 
-# 这是User-Agent
+[User-Agent]
+# 这是User-Agent，可通过抓包获取，或者使用网络上的内容
 # 建议多用户使用不同的User-Agent
 # User-Agent数目不足会自动复制粘贴以补足
-[User-Agent]
 agents0 = this_is_an_example
 agents1 = this_is_an_example_2
+
+# 企业微信推送部分
+# 企业微信推送部分
+# 企业微信推送部分
+
+[CorporationID]
+# 这是您的企业ID，可以浏览器搜索其获取方式
+CORPID = example
+
+[AppID]
+# 这是您企业微信自建应用的ID
+AGENTID = example
+
+[Secret]
+# 这是您企业微信自建应用的Secret
+CORPSECRET = example
+
+[User]
+# 这是您需要推送给的用户
+# 当此项为@all时，消息将推送给企业内的所有用户
+TOUSER = @all

@@ -1,0 +1,64 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+ 
+import time
+import requests
+import json
+ 
+class WeChat:
+    def __init__(self, Inform):
+        self.CORPID = Inform[0]  # 企业ID，在管理后台获取
+        self.AGENTID = Inform[1]  # 应用ID，在后台应用中获取
+        self.CORPSECRET = Inform[2]  # 自建应用的Secret，每个自建应用里都有单独的secret
+        self.TOUSER = Inform[3]  # 接收者用户名,多个用户用|分割
+ 
+    def _get_access_token(self):  # 访问企业微信url获取access_token
+        url = 'https://qyapi.weixin.qq.com/cgi-bin/gettoken'
+        values = {'corpid': self.CORPID,
+                  'corpsecret': self.CORPSECRET,
+                  }
+        req = requests.post(url, params=values)
+        data = json.loads(req.text)
+        return data["access_token"]
+ 
+    def get_access_token(self):  # 获取access_token
+        try:  # 如果有本地缓存
+            with open('access_token.conf', 'r') as f:
+                t, access_token = f.read().split()
+        except:  # 没有本地缓存
+            with open('access_token.conf', 'w') as f:
+                access_token = self._get_access_token()
+                cur_time = time.time()
+                f.write('\t'.join([str(cur_time), access_token]))
+                return access_token
+        else:  # 判断access_token的更新
+            cur_time = time.time()
+            if 0 < cur_time - float(t) < 7260:
+                return access_token
+            else:
+                with open('access_token.conf', 'w') as f:
+                    access_token = self._get_access_token()
+                    f.write('\t'.join([str(cur_time), access_token]))
+                    return access_token
+ 
+    def send_data(self, message):  # 发送信息
+        send_url = 'https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=' + self.get_access_token()
+        send_values = {
+            "touser": self.TOUSER,
+            "msgtype": "text",
+            "agentid": self.AGENTID,
+            "text": {
+                "content": message
+                },
+            "safe": 0
+            }
+        send_msges=(bytes(json.dumps(send_values), 'utf-8'))
+        respone = requests.post(send_url, send_msges)
+        respone = respone.json()  # 当返回的数据是json串的时候直接用.json即可将respone转换成字典
+        return respone
+ 
+if __name__ == '__main__':
+    wx = WeChat()
+    r = wx.send_data("这是一条测试消息！\n 当你看到此消息，代表微信推送测试成功！")
+    print(r)
+    

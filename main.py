@@ -9,6 +9,7 @@ import random
 import json
 import time
 from post import Shuyi
+from Message_Push.Wechat import WeChat as Wp
 
 class config: #  配置文件操作，配置文件为config.ini
     def __init__(self):
@@ -19,6 +20,7 @@ class config: #  配置文件操作，配置文件为config.ini
         self.sections = self.cfg.sections()
 
     def sections_check(self): #  检查sections
+        IsNeeded = ['auth', 'User-Agent']
         if (('auth' in self.sections) & ('User-Agent' in self.sections)): #  包含auth和User-Agent
             print("config文件正常！")
             return 1
@@ -42,6 +44,13 @@ class config: #  配置文件操作，配置文件为config.ini
         self.sections_check()
         self.agent_check()
         return 1
+    
+    def WeChat_Push(self): #  微信推送相关数据
+        Inform = [self.cfg.get('CorporationID', 'CORPID')]
+        Inform.append(self.cfg.get('AppID', 'AGENTID'))
+        Inform.append(self.cfg.get('Secret', 'CORPSECRET'))
+        Inform.append(self.cfg.get('User', 'TOUSER'))
+        return Inform
     
     def user_num(self): #  返回用户数量
         return len(self.cfg.items('auth'))
@@ -80,7 +89,6 @@ class header:
     def write_json_data(self, auth, agent): #  写入json文件
         with open(self.file, 'w') as headers: #  使用写模式
             j = self.get_json_data(auth, agent)
-            
             json.dump(j, headers)
  
 if __name__ == '__main__':
@@ -92,7 +100,14 @@ if __name__ == '__main__':
         agent = cfg.agent(i)
         hd.write_json_data(auth, agent)
         sy = Shuyi()
-        print(sy.post().text) # 打印签到结果
+        res = sy.post()
+        print(res.text)
+        Inform = cfg.WeChat_Push()
+        print(Inform)
+        print(type(Inform[2]))
+        WeChatpush = Wp(Inform)
+        rsp = WeChatpush.send_data(res.text)
+        print(rsp)
         r=random.randint(60,100)
         print(f"已完成第{i + 1}个用户签到，等待{r}秒")
         time.sleep(random.randint(60,100))
